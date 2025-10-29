@@ -43,7 +43,7 @@ public class ProjectMapper {
         return dto;
     }
 
-    private ProjectGetDto.ProjectEmployeeDto mapEmployeeEntityToDto(ProjectEntity.ProjectEmployee entity) {
+    private ProjectGetDto.ProjectEmployeeDto mapEmployeeEntityToDto(ProjectEmployeeEntity entity) {
         ProjectGetDto.ProjectEmployeeDto dto = new ProjectGetDto.ProjectEmployeeDto();
         dto.setEmployeeId(entity.getEmployeeId());
         dto.setRoleId(entity.getRoleId());
