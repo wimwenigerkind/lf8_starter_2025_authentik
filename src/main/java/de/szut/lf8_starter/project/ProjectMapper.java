@@ -2,7 +2,6 @@ package de.szut.lf8_starter.project;
 
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
-import de.szut.lf8_starter.project.dto.ProjectUpdateDto;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
