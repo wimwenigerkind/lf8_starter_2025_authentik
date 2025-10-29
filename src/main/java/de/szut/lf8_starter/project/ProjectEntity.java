@@ -38,15 +38,6 @@ public class ProjectEntity {
 
     private LocalDate actualEndDate;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<ProjectEmployee> employees;
-
-    @Data
-    @Embeddable
-    public static class ProjectEmployee {
-        private long employeeId;
-        private long roleId;
-        private LocalDate startDate;
-        private LocalDate endDate;
-    }
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<ProjectEmployeeEntity> employees;
 }
