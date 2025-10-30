@@ -3,6 +3,7 @@ package de.szut.lf8_starter.project;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class ProjectController implements ProjectControllerOpenAPI {
 
     @Override
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ProjectGetDto create(@Valid @RequestBody ProjectCreateDto dto) {
         ProjectEntity entity = projectMapper.mapCreateDtoToEntity(dto);
         ProjectEntity savedEntity = this.projectService.create(entity);
