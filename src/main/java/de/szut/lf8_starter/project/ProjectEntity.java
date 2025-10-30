@@ -23,10 +23,10 @@ public class ProjectEntity {
     private String name;
 
     @NotNull(message = "project responsible employee must not be null")
-    private long responsibleEmployeeId;
+    private Long responsibleEmployeeId;
 
     @NotNull(message = "project client must not be null")
-    private long clientId;
+    private Long clientId;
 
     @NotBlank(message = "project client contact name must not be blank")
     private String clientContactName;
