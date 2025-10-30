@@ -1,5 +1,6 @@
 package de.szut.lf8_starter.project.dto;
 
+import de.szut.lf8_starter.validation.ValidDateRange;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@ValidDateRange(startDateField = "startDate", endDateField = "plannedEndDate")
+@ValidDateRange(startDateField = "startDate", endDateField = "actualEndDate")
 public class ProjectCreateDto {
     @NotBlank(message = "project name must not be blank")
     private String name;
