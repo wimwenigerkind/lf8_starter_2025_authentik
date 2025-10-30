@@ -24,4 +24,16 @@ public interface ProjectControllerOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ProjectGetDto create(@Valid @RequestBody ProjectCreateDto dto);
+
+    @Operation(summary = "deletes a Project by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Project deleted",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Project not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized",
+                    content = @Content)})
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(@PathVariable Long id);
 }

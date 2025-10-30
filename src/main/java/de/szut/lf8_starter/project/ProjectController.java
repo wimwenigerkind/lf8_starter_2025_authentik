@@ -26,4 +26,10 @@ public class ProjectController implements ProjectControllerOpenAPI {
         ProjectEntity savedEntity = this.projectService.create(entity);
         return projectMapper.mapEntityToGetDto(savedEntity);
     }
+
+    @Override
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        this.projectService.delete(id);
+    }
 }
