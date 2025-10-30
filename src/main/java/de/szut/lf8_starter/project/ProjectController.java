@@ -5,9 +5,6 @@ import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping("/api/v1/projects")
 public class ProjectController implements ProjectControllerOpenAPI {
