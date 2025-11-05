@@ -26,7 +26,7 @@ public interface ProjectControllerOpenAPI {
     @ResponseStatus(HttpStatus.CREATED)
     ProjectGetDto create(@Valid @RequestBody ProjectCreateDto dto);
 
-    @Operation(summary = "assigns an employee to a project")
+    @Operation(summary = "Adds an employee to a Project")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "employee assigned successfully",
                     content = @Content),
@@ -43,4 +43,18 @@ public interface ProjectControllerOpenAPI {
     @PostMapping("/{projectId}/employees")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void assignEmployee(@PathVariable Long projectId, @Valid @RequestBody EmployeeAssignmentDto dto);
+
+    @Operation(summary = "removes an employee from a project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "employee removed successfully",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "project not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "409", description = "employee not assigned to this project",
+                    content = @Content)})
+    @DeleteMapping("/{projectId}/employees/{employeeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void removeEmployee(@PathVariable Long projectId, @PathVariable Long employeeId);
 }

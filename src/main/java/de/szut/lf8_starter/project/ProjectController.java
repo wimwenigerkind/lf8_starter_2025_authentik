@@ -1,8 +1,11 @@
 package de.szut.lf8_starter.project;
 
+import de.szut.lf8_starter.employee.EmployeeService;
+import de.szut.lf8_starter.employee.dto.EmployeeAssignmentDto;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController implements ProjectControllerOpenAPI {
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
+    private final EmployeeService employeeService;
 
-    public ProjectController(ProjectService projectService, ProjectMapper projectMapper) {
+    @Autowired
+    public ProjectController(ProjectService projectService, ProjectMapper projectMapper, EmployeeService employeeService) {
         this.projectService = projectService;
         this.projectMapper = projectMapper;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -25,4 +31,19 @@ public class ProjectController implements ProjectControllerOpenAPI {
         ProjectEntity savedEntity = this.projectService.create(entity);
         return projectMapper.mapEntityToGetDto(savedEntity);
     }
+
+    @PostMapping("/{projectId}/employees")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void assignEmployee(@PathVariable Long projectId, @RequestBody EmployeeAssignmentDto dto) {
+        employeeService.assignToProject(dto.getEmployeeId(), projectId, dto);
+    }
+
+    @Override
+    @DeleteMapping("/{projectId}/employees/{employeeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeEmployee(Long projectId, Long employeeId) {
+        employeeService.removeFromProject(employeeId, projectId);
+    }
+
+
 }
