@@ -14,9 +14,6 @@ public class EmployeeAssignmentDto {
     @NotNull(message = "employee id must not be null")
     private Long employeeId;
 
-    @NotNull(message = "role id must not be null")
-    private Long roleId;
-
     @NotNull(message = "start date must not be null")
     private LocalDate startDate;
 
