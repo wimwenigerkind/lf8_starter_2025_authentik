@@ -19,6 +19,7 @@ public class ProjectMapper {
         entity.setStartDate(dto.getStartDate());
         entity.setPlannedEndDate(dto.getPlannedEndDate());
         entity.setActualEndDate(dto.getActualEndDate());
+        entity.setQualificationIds(dto.getQualificationIds());
 
         return entity;
     }
@@ -34,6 +35,7 @@ public class ProjectMapper {
         dto.setStartDate(entity.getStartDate());
         dto.setPlannedEndDate(entity.getPlannedEndDate());
         dto.setActualEndDate(entity.getActualEndDate());
+        dto.setQualificationIds(entity.getQualificationIds());
 
         if (entity.getEmployees() != null) {
             dto.setEmployees(entity.getEmployees().stream()
