@@ -1,7 +1,6 @@
 package de.szut.lf8_starter.project;
 
-import de.szut.lf8_starter.employee.dto.EmployeeAddDto;
-import de.szut.lf8_starter.employee.dto.EmployeeGetDto;
+import de.szut.lf8_starter.employee.dto.EmployeeAssignmentDto;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,23 +26,21 @@ public interface ProjectControllerOpenAPI {
     @ResponseStatus(HttpStatus.CREATED)
     ProjectGetDto create(@Valid @RequestBody ProjectCreateDto dto);
 
-    @Operation(summary = "Adds an employee to a Project")
+    @Operation(summary = "assigns an employee to a project")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "added employee to Project",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProjectGetDto.class))}),
+            @ApiResponse(responseCode = "204", description = "employee assigned successfully",
+                    content = @Content),
             @ApiResponse(responseCode = "400", description = "invalid JSON posted",
                     content = @Content),
             @ApiResponse(responseCode = "401", description = "not authorized",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Project or Employee not found",
+            @ApiResponse(responseCode = "404", description = "project or employee not found",
                     content = @Content),
-            @ApiResponse(responseCode = "409", description = "Employee already assigned to Project",
+            @ApiResponse(responseCode = "409", description = "employee already assigned during this time period",
                     content = @Content),
-            @ApiResponse(responseCode = "422" , description = "qualification not met",
-                    content = @Content)
-            })
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    EmployeeGetDto add(EmployeeAddDto dto, @PathVariable String projectId);
+            @ApiResponse(responseCode = "422", description = "employee has no qualification",
+                    content = @Content)})
+    @PostMapping("/{projectId}/employees")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void assignEmployee(@PathVariable Long projectId, @Valid @RequestBody EmployeeAssignmentDto dto);
 }
