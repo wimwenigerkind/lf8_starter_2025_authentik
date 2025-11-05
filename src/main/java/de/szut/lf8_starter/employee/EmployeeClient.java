@@ -38,18 +38,50 @@ public class EmployeeClient {
     }
 
     /**
-     * Checks if an employee has any qualification
+     * Checks if an employee has the required qualifications
      * @param employeeId the employee ID
-     * @return true if employee has at least one skill in skillSet
+     * @param requiredQualificationIds the list of required qualification IDs (can be null or empty)
+     * @return true if employee has all required qualifications, or if no qualifications are required
      */
-    public boolean employeeHasQualification(Long employeeId) {
+    public boolean employeeHasQualification(Long employeeId, java.util.List<Long> requiredQualificationIds) {
         try {
             String url = employeeServiceUrl + "/employees/" + employeeId;
             EmployeeDto employee = restTemplate.getForObject(url, EmployeeDto.class);
 
-            return employee != null
-                && employee.getSkillSet() != null
-                && !employee.getSkillSet().isEmpty();
+            if (employee == null || employee.getSkillSet() == null || employee.getSkillSet().isEmpty()) {
+                return false;
+            }
+
+            if (requiredQualificationIds == null || requiredQualificationIds.isEmpty()) {
+                return true;
+            }
+
+            java.util.Set<Long> employeeQualificationIds = employee.getSkillSet().stream()
+                .map(QualificationDto::getId)
+                .collect(java.util.stream.Collectors.toSet());
+
+            return employeeQualificationIds.containsAll(requiredQualificationIds);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                return false;
+            }
+            throw e;
+        }
+    }
+
+    public boolean isValidQualification(String qualificationId) {
+        try {
+            String url = employeeServiceUrl + "/qualifications";
+            QualificationDto[] qualifications = restTemplate.getForObject(url, QualificationDto[].class);
+            if (qualifications == null) {
+                return false;
+            }
+            for (QualificationDto q : qualifications) {
+                if (q != null && qualificationId.equals(String.valueOf(q.getId()))) {
+                    return true;
+                }
+            }
+            return false;
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 return false;
