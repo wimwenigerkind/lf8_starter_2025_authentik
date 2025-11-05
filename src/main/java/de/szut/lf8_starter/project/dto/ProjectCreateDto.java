@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,4 +35,6 @@ public class ProjectCreateDto {
     private LocalDate plannedEndDate;
 
     private LocalDate actualEndDate;
+
+    private List<Long> qualificationIds;
 }
