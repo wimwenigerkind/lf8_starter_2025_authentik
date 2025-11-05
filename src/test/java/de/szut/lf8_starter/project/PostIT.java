@@ -13,6 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,7 +31,8 @@ public class PostIT extends AbstractIntegrationTest {
     @BeforeEach
     void setUpMocks() {
         when(employeeClient.employeeExists(anyLong())).thenReturn(true);
-        when(employeeClient.employeeHasQualification(anyLong())).thenReturn(true);
+        when(employeeClient.employeeHasQualification(anyLong(), org.mockito.ArgumentMatchers.<Long>anyList())).thenReturn(true);
+        when(employeeClient.isValidQualification(anyLong())).thenReturn(true);
         when(clientClient.clientExists(anyLong())).thenReturn(true);
     }
 
@@ -46,7 +48,8 @@ public class PostIT extends AbstractIntegrationTest {
                   "comment": "Construction of new headquarters",
                   "startDate": "2025-10-01",
                   "plannedEndDate": "2026-03-31",
-                  "actualEndDate": null
+                  "actualEndDate": null,
+                  "qualificationIds": [1]
                 }
                 """;
 
@@ -63,6 +66,7 @@ public class PostIT extends AbstractIntegrationTest {
                 .andExpect(jsonPath("comment", is("Construction of new headquarters")))
                 .andExpect(jsonPath("startDate", is("2025-10-01")))
                 .andExpect(jsonPath("plannedEndDate", is("2026-03-31")))
+                .andExpect(jsonPath("qualificationIds[0]", is(1)))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();

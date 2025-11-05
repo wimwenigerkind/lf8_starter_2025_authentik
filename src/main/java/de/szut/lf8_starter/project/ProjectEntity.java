@@ -42,6 +42,11 @@ public class ProjectEntity {
 
     private LocalDate actualEndDate;
 
+    @ElementCollection
+    @CollectionTable(name = "project_qualifications", joinColumns = @JoinColumn(name = "project_id"))
+    @Column(name = "qualification_id")
+    private List<Long> qualificationIds;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<EmployeeEntity> employees;
 }
