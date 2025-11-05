@@ -21,8 +21,8 @@ jobs:
         image: postgres:14
         env:
           POSTGRES_DB: lf8Starter
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: secret
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
