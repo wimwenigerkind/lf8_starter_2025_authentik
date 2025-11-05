@@ -35,20 +35,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 24
+      - name: Set up JDK 22
         uses: actions/setup-java@v4
-        id: setup-java-24
-        continue-on-error: true
         with:
-          java-version: '24'
-          distribution: 'temurin'
-          check-latest: true
-
-      - name: Set up JDK 21 (fallback)
-        uses: actions/setup-java@v4
-        if: steps.setup-java-24.outcome == 'failure'
-        with:
-          java-version: '21'
+          java-version: '22'
           distribution: 'temurin'
 
       - name: Cache Gradle packages
