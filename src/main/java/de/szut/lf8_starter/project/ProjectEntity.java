@@ -1,5 +1,6 @@
 package de.szut.lf8_starter.project;
 
+import de.szut.lf8_starter.employee.EmployeeEntity;
 import de.szut.lf8_starter.validation.ValidDateRange;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -42,5 +43,5 @@ public class ProjectEntity {
     private LocalDate actualEndDate;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<ProjectEmployeeEntity> employees;
+    private List<EmployeeEntity> employees;
 }

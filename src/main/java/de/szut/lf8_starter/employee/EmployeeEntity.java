@@ -1,5 +1,6 @@
-package de.szut.lf8_starter.project;
+package de.szut.lf8_starter.employee;
 
+import de.szut.lf8_starter.project.ProjectEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "project_employee")
-public class ProjectEmployeeEntity {
+public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

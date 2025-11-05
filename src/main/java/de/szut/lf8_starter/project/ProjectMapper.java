@@ -1,5 +1,6 @@
 package de.szut.lf8_starter.project;
 
+import de.szut.lf8_starter.employee.EmployeeEntity;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class ProjectMapper {
         return dto;
     }
 
-    private ProjectGetDto.ProjectEmployeeDto mapEmployeeEntityToDto(ProjectEmployeeEntity entity) {
+    private ProjectGetDto.ProjectEmployeeDto mapEmployeeEntityToDto(EmployeeEntity entity) {
         ProjectGetDto.ProjectEmployeeDto dto = new ProjectGetDto.ProjectEmployeeDto();
         dto.setEmployeeId(entity.getEmployeeId());
         dto.setRoleId(entity.getRoleId());
