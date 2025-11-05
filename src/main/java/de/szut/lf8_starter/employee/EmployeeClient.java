@@ -69,7 +69,7 @@ public class EmployeeClient {
         }
     }
 
-    public boolean isValidQualification(String qualificationId) {
+    public boolean isValidQualification(Long qualificationId) {
         try {
             String url = employeeServiceUrl + "/qualifications";
             QualificationDto[] qualifications = restTemplate.getForObject(url, QualificationDto[].class);
@@ -77,7 +77,7 @@ public class EmployeeClient {
                 return false;
             }
             for (QualificationDto q : qualifications) {
-                if (q != null && qualificationId.equals(String.valueOf(q.getId()))) {
+                if (q != null && qualificationId.equals(q.getId())) {
                     return true;
                 }
             }

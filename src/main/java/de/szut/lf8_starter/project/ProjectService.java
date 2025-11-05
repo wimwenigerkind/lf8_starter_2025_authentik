@@ -31,7 +31,7 @@ public class ProjectService {
 
         if (entity.getQualificationIds() != null && !entity.getQualificationIds().isEmpty()) {
             for (Long qualificationId : entity.getQualificationIds()) {
-                if (!employeeClient.isValidQualification(String.valueOf(qualificationId))) {
+                if (!employeeClient.isValidQualification(qualificationId)) {
                     throw new QualificationNotMetException("Qualification not found with id: " + qualificationId);
                 }
             }
