@@ -4,7 +4,7 @@ import de.szut.lf8_starter.client.ClientClient;
 import de.szut.lf8_starter.employee.EmployeeClient;
 import de.szut.lf8_starter.exceptionHandling.ClientNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
-import de.szut.lf8_starter.exceptionHandling.QualificationMissingException;
+import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,8 +29,16 @@ public class ProjectService {
             throw new ClientNotFoundException("Client not found with id: " + entity.getClientId());
         }
 
-        if (!employeeClient.employeeHasQualification(entity.getResponsibleEmployeeId())) {
-            throw new QualificationMissingException("Employee does not have any qualification");
+        if (entity.getQualificationIds() != null && !entity.getQualificationIds().isEmpty()) {
+            for (Long qualificationId : entity.getQualificationIds()) {
+                if (!employeeClient.isValidQualification(qualificationId)) {
+                    throw new QualificationNotMetException("Qualification not found with id: " + qualificationId);
+                }
+            }
+        }
+
+        if (!employeeClient.employeeHasQualification(entity.getResponsibleEmployeeId(), entity.getQualificationIds())) {
+            throw new QualificationNotMetException("Employee does not have all required qualifications for this project");
         }
 
         return this.repository.save(entity);

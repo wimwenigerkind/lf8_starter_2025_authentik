@@ -19,6 +19,7 @@ public class ProjectGetDto {
     private LocalDate startDate;
     private LocalDate plannedEndDate;
     private LocalDate actualEndDate;
+    private List<Long> qualificationIds;
     private List<ProjectEmployeeDto> employees;
 
     @Getter
