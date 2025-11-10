@@ -1,6 +1,7 @@
 package de.szut.lf8_starter.project;
 
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
+import de.szut.lf8_starter.project.dto.ProjectEmployeesDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,12 @@ public class ProjectController implements ProjectControllerOpenAPI {
     public ProjectGetDto getById(@PathVariable long id) {
         ProjectEntity entity = this.projectService.getById(id);
         return projectMapper.mapEntityToGetDto(entity);
+    }
+
+    @Override
+    @GetMapping("/{id}/employees")
+    public ProjectEmployeesDto getProjectEmployees(@PathVariable long id) {
+        ProjectEntity entity = this.projectService.getById(id);
+        return projectMapper.mapEntityToEmployeesDto(entity);
     }
 }
