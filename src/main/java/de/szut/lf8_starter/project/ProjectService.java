@@ -5,6 +5,7 @@ import de.szut.lf8_starter.employee.EmployeeClient;
 import de.szut.lf8_starter.exceptionHandling.ClientNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
+import de.szut.lf8_starter.exceptionHandling.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +52,7 @@ public class ProjectService {
     }
 
     public ProjectEntity getById(Long id) {
-        return this.repository.getReferenceById(id);
+        return this.repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
     }
 }
