@@ -48,5 +48,5 @@ public interface ProjectControllerOpenAPI {
             @ApiResponse(responseCode = "401", description = "not authorized",
                     content = @Content)})
     @GetMapping("/{id}")
-    ProjectGetDto getProjectById(@PathVariable("id") long id);
+    ProjectGetDto getById(@PathVariable("id") long id);
 }
