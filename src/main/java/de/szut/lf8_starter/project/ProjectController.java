@@ -36,4 +36,11 @@ public class ProjectController implements ProjectControllerOpenAPI {
                 .map(projectMapper::mapEntityToGetDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @RequestMapping("/{id}")
+    public ProjectGetDto getProjectById(@PathVariable long id) {
+        ProjectEntity entity = this.projectService.getById(id);
+        return projectMapper.mapEntityToGetDto(entity);
+    }
 }
