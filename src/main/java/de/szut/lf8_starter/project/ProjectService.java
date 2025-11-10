@@ -49,4 +49,8 @@ public class ProjectService {
     public List<ProjectEntity> getAll() {
         return this.repository.findAll();
     }
+
+    public ProjectEntity getById(Long id) {
+        return this.repository.getReferenceById(id);
+    }
 }
