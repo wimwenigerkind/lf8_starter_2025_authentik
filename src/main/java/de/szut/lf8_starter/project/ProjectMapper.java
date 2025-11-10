@@ -2,6 +2,7 @@ package de.szut.lf8_starter.project;
 
 import de.szut.lf8_starter.employee.EmployeeEntity;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
+import de.szut.lf8_starter.project.dto.ProjectEmployeesDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,27 @@ public class ProjectMapper {
         dto.setRoleId(entity.getRoleId());
         dto.setStartDate(entity.getStartDate());
         dto.setEndDate(entity.getEndDate());
+        return dto;
+    }
+
+    public ProjectEmployeesDto mapEntityToEmployeesDto(ProjectEntity entity) {
+        ProjectEmployeesDto dto = new ProjectEmployeesDto();
+        dto.setProjectId(entity.getId());
+        dto.setProjectName(entity.getName());
+
+        if (entity.getEmployees() != null) {
+            dto.setEmployees(entity.getEmployees().stream()
+                    .map(this::mapEmployeeEntityToEmployeeRoleDto)
+                    .collect(Collectors.toList()));
+        }
+
+        return dto;
+    }
+
+    private ProjectEmployeesDto.EmployeeRoleDto mapEmployeeEntityToEmployeeRoleDto(EmployeeEntity entity) {
+        ProjectEmployeesDto.EmployeeRoleDto dto = new ProjectEmployeesDto.EmployeeRoleDto();
+        dto.setEmployeeId(entity.getEmployeeId());
+        dto.setRoleId(entity.getRoleId());
         return dto;
     }
 }
