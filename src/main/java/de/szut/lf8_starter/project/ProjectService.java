@@ -7,6 +7,8 @@ import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProjectService {
     private final ProjectRepository repository;
@@ -42,5 +44,9 @@ public class ProjectService {
         }
 
         return this.repository.save(entity);
+    }
+
+    public List<ProjectEntity> getAll() {
+        return this.repository.findAll();
     }
 }
