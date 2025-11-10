@@ -37,4 +37,16 @@ public interface ProjectControllerOpenAPI {
                     content = @Content)})
     @GetMapping
     List<ProjectGetDto> getAll();
+
+    @Operation(summary = "get project by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "returned project by id",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProjectGetDto.class))}),
+            @ApiResponse(responseCode = "404", description = "project not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized",
+                    content = @Content)})
+    @GetMapping("/{id}")
+    ProjectGetDto getProjectById(@PathVariable("id") long id);
 }
