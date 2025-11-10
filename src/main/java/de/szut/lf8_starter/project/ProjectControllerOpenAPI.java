@@ -1,6 +1,7 @@
 package de.szut.lf8_starter.project;
 
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
+import de.szut.lf8_starter.project.dto.ProjectEmployeesDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -49,4 +50,16 @@ public interface ProjectControllerOpenAPI {
                     content = @Content)})
     @GetMapping("/{id}")
     ProjectGetDto getById(@PathVariable("id") long id);
+
+    @Operation(summary = "get employees of a project by project id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "returned project employees",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProjectEmployeesDto.class))}),
+            @ApiResponse(responseCode = "404", description = "project not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized",
+                    content = @Content)})
+    @GetMapping("/{id}/employees")
+    ProjectEmployeesDto getProjectEmployees(@PathVariable("id") long id);
 }
