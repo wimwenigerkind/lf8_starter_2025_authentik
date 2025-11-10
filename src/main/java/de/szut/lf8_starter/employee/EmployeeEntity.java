@@ -1,25 +1,25 @@
 package de.szut.lf8_starter.employee;
 
+import de.szut.lf8_starter.project.ProjectEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "employee")
+@Table(name = "project_employee")
 public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotBlank(message = "project name must not be blank")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private ProjectEntity project;
 
-    @NotBlank(message = "employee role must not be blank")
-    private String role;
-
+    private long employeeId;
+    private long roleId;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

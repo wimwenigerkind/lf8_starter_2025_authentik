@@ -1,5 +1,7 @@
 package de.szut.lf8_starter.project;
 
+import de.szut.lf8_starter.employee.EmployeeEntity;
+import de.szut.lf8_starter.validation.ValidDateRange;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +13,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "project")
+@ValidDateRange(startDateField = "startDate", endDateField = "plannedEndDate")
+@ValidDateRange(startDateField = "startDate", endDateField = "actualEndDate")
 public class ProjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,10 +24,10 @@ public class ProjectEntity {
     private String name;
 
     @NotNull(message = "project responsible employee must not be null")
-    private long responsibleEmployeeId;
+    private Long responsibleEmployeeId;
 
     @NotNull(message = "project client must not be null")
-    private long clientId;
+    private Long clientId;
 
     @NotBlank(message = "project client contact name must not be blank")
     private String clientContactName;
@@ -38,15 +42,11 @@ public class ProjectEntity {
 
     private LocalDate actualEndDate;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<ProjectEmployee> employees;
+    @ElementCollection
+    @CollectionTable(name = "project_qualifications", joinColumns = @JoinColumn(name = "project_id"))
+    @Column(name = "qualification_id")
+    private List<Long> qualificationIds;
 
-    @Data
-    @Embeddable
-    public static class ProjectEmployee {
-        private long employeeId;
-        private long roleId;
-        private LocalDate startDate;
-        private LocalDate endDate;
-    }
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<EmployeeEntity> employees;
 }
