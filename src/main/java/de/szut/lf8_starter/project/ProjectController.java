@@ -6,6 +6,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/v1/projects")
 public class ProjectController implements ProjectControllerOpenAPI {
@@ -24,5 +27,13 @@ public class ProjectController implements ProjectControllerOpenAPI {
         ProjectEntity entity = projectMapper.mapCreateDtoToEntity(dto);
         ProjectEntity savedEntity = this.projectService.create(entity);
         return projectMapper.mapEntityToGetDto(savedEntity);
+    }
+
+    @Override
+    public List<ProjectGetDto> getAll() {
+        return this.projectService.getAll()
+                .stream()
+                .map(projectMapper::mapEntityToGetDto)
+                .collect(Collectors.toList());
     }
 }
