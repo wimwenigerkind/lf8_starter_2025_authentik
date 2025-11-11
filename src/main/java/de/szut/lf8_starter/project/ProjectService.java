@@ -56,4 +56,41 @@ public class ProjectService {
         return this.repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
     }
+
+    public void update(Long id, ProjectEntity updatedEntity) {
+        ProjectEntity existingEntity = this.repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+
+        if (!employeeClient.employeeExists(updatedEntity.getResponsibleEmployeeId())) {
+            throw new EmployeeNotFoundException("Employee not found with id: " + updatedEntity.getResponsibleEmployeeId());
+        }
+
+        if (!clientClient.clientExists(updatedEntity.getClientId())) {
+            throw new ClientNotFoundException("Client not found with id: " + updatedEntity.getClientId());
+        }
+
+        if (updatedEntity.getQualificationIds() != null && !updatedEntity.getQualificationIds().isEmpty()) {
+            for (Long qualificationId : updatedEntity.getQualificationIds()) {
+                if (!employeeClient.isValidQualification(qualificationId)) {
+                    throw new QualificationNotMetException("Qualification not found with id: " + qualificationId);
+                }
+            }
+        }
+
+        if (!employeeClient.employeeHasQualification(updatedEntity.getResponsibleEmployeeId(), updatedEntity.getQualificationIds())) {
+            throw new QualificationNotMetException("Employee does not have all required qualifications for this project");
+        }
+
+        existingEntity.setName(updatedEntity.getName());
+        existingEntity.setResponsibleEmployeeId(updatedEntity.getResponsibleEmployeeId());
+        existingEntity.setClientId(updatedEntity.getClientId());
+        existingEntity.setClientContactName(updatedEntity.getClientContactName());
+        existingEntity.setComment(updatedEntity.getComment());
+        existingEntity.setStartDate(updatedEntity.getStartDate());
+        existingEntity.setPlannedEndDate(updatedEntity.getPlannedEndDate());
+        existingEntity.setActualEndDate(updatedEntity.getActualEndDate());
+        existingEntity.setQualificationIds(updatedEntity.getQualificationIds());
+
+        this.repository.save(existingEntity);
+    }
 }
