@@ -3,6 +3,7 @@ package de.szut.lf8_starter.project;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectEmployeesDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
+import de.szut.lf8_starter.project.dto.ProjectUpdateDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -51,5 +52,13 @@ public class ProjectController implements ProjectControllerOpenAPI {
     public ProjectEmployeesDto getProjectEmployees(@PathVariable long id) {
         ProjectEntity entity = this.projectService.getById(id);
         return projectMapper.mapEntityToEmployeesDto(entity);
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    public void update(@PathVariable long id, @Valid @RequestBody ProjectUpdateDto dto) {
+        ProjectEntity entity = new ProjectEntity();
+        projectMapper.updateEntityFromDto(dto, entity);
+        this.projectService.update(id, entity);
     }
 }
