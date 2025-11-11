@@ -36,7 +36,7 @@ public class ProjectController implements ProjectControllerOpenAPI {
         return this.projectService.getAll()
                 .stream()
                 .map(projectMapper::mapEntityToGetDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

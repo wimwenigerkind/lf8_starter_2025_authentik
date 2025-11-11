@@ -41,7 +41,7 @@ public class ProjectMapper {
         if (entity.getEmployees() != null) {
             dto.setEmployees(entity.getEmployees().stream()
                     .map(this::mapEmployeeEntityToDto)
-                    .collect(Collectors.toList()));
+                    .toList());
         }
 
         return dto;
@@ -64,7 +64,7 @@ public class ProjectMapper {
         if (entity.getEmployees() != null) {
             dto.setEmployees(entity.getEmployees().stream()
                     .map(this::mapEmployeeEntityToEmployeeRoleDto)
-                    .collect(Collectors.toList()));
+                    .toList());
         }
 
         return dto;
