@@ -11,6 +11,5 @@ import java.util.List;
 public class EmployeeGetDto {
 
     private Long id;
-    private String name;
     private String role;
 }

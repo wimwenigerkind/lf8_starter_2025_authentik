@@ -20,24 +20,20 @@ public class EmployeeEntity {
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
 
-    private long employeeId;
-    private long roleId;
+    private Long employeeId;
+    private Long roleId;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public void setResponsibleEmployeeId(@NotNull(message = "responsible employee id must not be null") Long responsibleEmployeeId) {
-        this.employeeId = responsibleEmployeeId;
+    public void setRole(@NotBlank(message = "employee role must not be blank") Long role) {
+        this.roleId = role;
     }
 
-    public void setRole(@NotBlank(message = "employee role must not be blank") String role) {
-        this.roleId = role.hashCode();
+    public Long getName() {
+        return employeeId;
     }
 
-    public String getName() {
-        return "" + employeeId;
-    }
-
-    public String getRole() {
-        return "" + roleId;
+    public Long getRole() {
+        return roleId;
     }
 }
