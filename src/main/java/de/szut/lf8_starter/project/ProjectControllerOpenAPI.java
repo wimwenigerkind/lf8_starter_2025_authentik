@@ -62,4 +62,18 @@ public interface ProjectControllerOpenAPI {
                     content = @Content)})
     @GetMapping("/{id}/employees")
     ProjectEmployeesDto getProjectEmployees(@PathVariable("id") long id);
+
+    @Operation(summary = "delete project by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "project deleted successfully",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "project not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "409", description = "project has assigned employees",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "not authorized",
+                    content = @Content)})
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteById(@PathVariable("id") long id);
 }

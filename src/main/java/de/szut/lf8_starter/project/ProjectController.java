@@ -52,4 +52,11 @@ public class ProjectController implements ProjectControllerOpenAPI {
         ProjectEntity entity = this.projectService.getById(id);
         return projectMapper.mapEntityToEmployeesDto(entity);
     }
+
+    @Override
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable long id) {
+        this.projectService.deleteById(id);
+    }
 }
