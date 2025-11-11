@@ -40,7 +40,7 @@ public class ProjectController implements ProjectControllerOpenAPI {
     }
 
     @Override
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public ProjectGetDto getById(@PathVariable long id) {
         ProjectEntity entity = this.projectService.getById(id);
         return projectMapper.mapEntityToGetDto(entity);
