@@ -45,5 +45,24 @@ public class ProjectController implements ProjectControllerOpenAPI {
         employeeService.removeFromProject(employeeId, projectId);
     }
 
+    @GetMapping("/employees/{employeeId}/projects")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ProjectGetDto getProjectsByEmployeeId(@PathVariable Long employeeId) {
+        ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId);
+        ProjectGetDto[] result = new ProjectGetDto[projects.length];
+        for (int i = 0; i < projects.length; i++) {
+            result[i] = projectMapper.mapEntityToGetDto(projects[i]);
+        } return null;
+    }
 
+    @GetMapping("/employees/{employeeId}/projects/{projectId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ProjectGetDto getProjectByEmployeeIdAndProjectId(@PathVariable Long employeeId, @PathVariable Long projectId) {
+        ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId);
+        for (ProjectEntity project : projects) {
+            if (project.getId().equals(projectId)) {
+                return projectMapper.mapEntityToGetDto(project);
+            }
+        } return null;
+    }
 }

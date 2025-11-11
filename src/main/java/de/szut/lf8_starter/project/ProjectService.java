@@ -43,4 +43,11 @@ public class ProjectService {
 
         return this.repository.save(entity);
     }
+
+    public ProjectEntity[] getProjectsByEmployeeId(Long employeeId) {
+        return repository.findAll().stream()
+                .filter(project -> project.getEmployees().stream()
+                        .anyMatch(employee -> employee.getId().equals(employeeId)))
+                .toArray(ProjectEntity[]::new);
+    }
 }
