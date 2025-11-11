@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/projects")
 public class ProjectController implements ProjectControllerOpenAPI {
+
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
 
