@@ -3,10 +3,7 @@ package de.szut.lf8_starter.employee;
 import de.szut.lf8_starter.employee.dto.EmployeeAddDto;
 import de.szut.lf8_starter.employee.dto.EmployeeGetDto;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/employees")

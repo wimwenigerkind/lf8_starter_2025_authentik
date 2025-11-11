@@ -2,6 +2,8 @@ package de.szut.lf8_starter.employee;
 
 import de.szut.lf8_starter.project.ProjectEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,7 +14,7 @@ import java.time.LocalDate;
 public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
@@ -22,4 +24,20 @@ public class EmployeeEntity {
     private long roleId;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    public void setResponsibleEmployeeId(@NotNull(message = "responsible employee id must not be null") Long responsibleEmployeeId) {
+        this.employeeId = responsibleEmployeeId;
+    }
+
+    public void setRole(@NotBlank(message = "employee role must not be blank") String role) {
+        this.roleId = role.hashCode();
+    }
+
+    public String getName() {
+        return "" + employeeId;
+    }
+
+    public String getRole() {
+        return "" + roleId;
+    }
 }
