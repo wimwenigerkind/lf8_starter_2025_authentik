@@ -3,6 +3,7 @@ package de.szut.lf8_starter.project;
 import de.szut.lf8_starter.client.ClientClient;
 import de.szut.lf8_starter.employee.EmployeeClient;
 import de.szut.lf8_starter.exceptionHandling.ClientNotFoundException;
+import de.szut.lf8_starter.exceptionHandling.ConflictException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
 import de.szut.lf8_starter.exceptionHandling.ResourceNotFoundException;
@@ -64,5 +65,16 @@ public class ProjectService {
         if (!employeeClient.employeeHasQualification(employeeId, qualificationIds)) {
             throw new QualificationNotMetException("Employee does not have all required qualifications for this project");
         }
+    }
+
+    public void deleteById(Long id) {
+        ProjectEntity project = this.repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+
+        if (project.getEmployees() != null && !project.getEmployees().isEmpty()) {
+            throw new ConflictException("Cannot delete project with assigned employees");
+        }
+
+        this.repository.delete(project);
     }
 }

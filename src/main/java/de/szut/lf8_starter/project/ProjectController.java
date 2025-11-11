@@ -55,6 +55,13 @@ public class ProjectController implements ProjectControllerOpenAPI {
     }
 
     @Override
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable long id) {
+        this.projectService.deleteById(id);
+    }
+
+    @Override
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable long id, @Valid @RequestBody ProjectUpdateDto dto) {
