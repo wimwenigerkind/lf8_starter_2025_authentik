@@ -6,7 +6,6 @@ import de.szut.lf8_starter.exceptionHandling.ClientNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
 import de.szut.lf8_starter.exceptionHandling.ResourceNotFoundException;
-import de.szut.lf8_starter.project.dto.ProjectUpdateDto;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +17,11 @@ public class ProjectService {
     private final ProjectRepository repository;
     private final EmployeeClient employeeClient;
     private final ClientClient clientClient;
-    private final ProjectMapper projectMapper;
 
-    public ProjectService(ProjectRepository repository, EmployeeClient employeeClient, ClientClient clientClient, ProjectMapper projectMapper) {
+    public ProjectService(ProjectRepository repository, EmployeeClient employeeClient, ClientClient clientClient) {
         this.repository = repository;
         this.employeeClient = employeeClient;
         this.clientClient = clientClient;
-        this.projectMapper = projectMapper;
     }
 
     public ProjectEntity create(ProjectEntity entity) {
@@ -42,15 +39,9 @@ public class ProjectService {
     }
 
     @Transactional
-    public void update(Long id, ProjectUpdateDto dto) {
-        ProjectEntity existingEntity = this.repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
-
-        validateProjectDependencies(dto.getResponsibleEmployeeId(), dto.getClientId(), dto.getQualificationIds());
-
-        projectMapper.updateEntityFromDto(dto, existingEntity);
-
-        this.repository.save(existingEntity);
+    public void update(ProjectEntity updatedEntity) {
+        validateProjectDependencies(updatedEntity.getResponsibleEmployeeId(), updatedEntity.getClientId(), updatedEntity.getQualificationIds());
+        this.repository.save(updatedEntity);
     }
 
     private void validateProjectDependencies(Long employeeId, Long clientId, List<Long> qualificationIds) {

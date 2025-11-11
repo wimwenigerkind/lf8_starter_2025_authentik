@@ -58,6 +58,8 @@ public class ProjectController implements ProjectControllerOpenAPI {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable long id, @Valid @RequestBody ProjectUpdateDto dto) {
-        this.projectService.update(id, dto);
+        ProjectEntity existingEntity = this.projectService.getById(id);
+        projectMapper.updateEntityFromDto(dto, existingEntity);
+        this.projectService.update(existingEntity);
     }
 }
