@@ -6,6 +6,7 @@ import de.szut.lf8_starter.exceptionHandling.ClientNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
 import de.szut.lf8_starter.exceptionHandling.ResourceNotFoundException;
+import de.szut.lf8_starter.project.dto.ProjectUpdateDto;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ public class ProjectService {
     private final ProjectRepository repository;
     private final EmployeeClient employeeClient;
     private final ClientClient clientClient;
+    private final ProjectMapper projectMapper;
 
-    public ProjectService(ProjectRepository repository, EmployeeClient employeeClient, ClientClient clientClient) {
+    public ProjectService(ProjectRepository repository, EmployeeClient employeeClient, ClientClient clientClient, ProjectMapper projectMapper) {
         this.repository = repository;
         this.employeeClient = employeeClient;
         this.clientClient = clientClient;
+        this.projectMapper = projectMapper;
     }
 
     public ProjectEntity create(ProjectEntity entity) {
@@ -57,40 +60,36 @@ public class ProjectService {
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
     }
 
-    public void update(Long id, ProjectEntity updatedEntity) {
+    public void update(Long id, ProjectUpdateDto dto) {
         ProjectEntity existingEntity = this.repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
 
-        if (!employeeClient.employeeExists(updatedEntity.getResponsibleEmployeeId())) {
-            throw new EmployeeNotFoundException("Employee not found with id: " + updatedEntity.getResponsibleEmployeeId());
+        validateProjectDependencies(dto.getResponsibleEmployeeId(), dto.getClientId(), dto.getQualificationIds());
+
+        projectMapper.updateEntityFromDto(dto, existingEntity);
+
+        this.repository.save(existingEntity);
+    }
+
+    private void validateProjectDependencies(Long employeeId, Long clientId, List<Long> qualificationIds) {
+        if (!employeeClient.employeeExists(employeeId)) {
+            throw new EmployeeNotFoundException("Employee not found with id: " + employeeId);
         }
 
-        if (!clientClient.clientExists(updatedEntity.getClientId())) {
-            throw new ClientNotFoundException("Client not found with id: " + updatedEntity.getClientId());
+        if (!clientClient.clientExists(clientId)) {
+            throw new ClientNotFoundException("Client not found with id: " + clientId);
         }
 
-        if (updatedEntity.getQualificationIds() != null && !updatedEntity.getQualificationIds().isEmpty()) {
-            for (Long qualificationId : updatedEntity.getQualificationIds()) {
+        if (qualificationIds != null && !qualificationIds.isEmpty()) {
+            for (Long qualificationId : qualificationIds) {
                 if (!employeeClient.isValidQualification(qualificationId)) {
                     throw new QualificationNotMetException("Qualification not found with id: " + qualificationId);
                 }
             }
         }
 
-        if (!employeeClient.employeeHasQualification(updatedEntity.getResponsibleEmployeeId(), updatedEntity.getQualificationIds())) {
+        if (!employeeClient.employeeHasQualification(employeeId, qualificationIds)) {
             throw new QualificationNotMetException("Employee does not have all required qualifications for this project");
         }
-
-        existingEntity.setName(updatedEntity.getName());
-        existingEntity.setResponsibleEmployeeId(updatedEntity.getResponsibleEmployeeId());
-        existingEntity.setClientId(updatedEntity.getClientId());
-        existingEntity.setClientContactName(updatedEntity.getClientContactName());
-        existingEntity.setComment(updatedEntity.getComment());
-        existingEntity.setStartDate(updatedEntity.getStartDate());
-        existingEntity.setPlannedEndDate(updatedEntity.getPlannedEndDate());
-        existingEntity.setActualEndDate(updatedEntity.getActualEndDate());
-        existingEntity.setQualificationIds(updatedEntity.getQualificationIds());
-
-        this.repository.save(existingEntity);
     }
 }
