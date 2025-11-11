@@ -5,7 +5,11 @@ import de.szut.lf8_starter.employee.EmployeeClient;
 import de.szut.lf8_starter.exceptionHandling.ClientNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
+import de.szut.lf8_starter.exceptionHandling.ResourceNotFoundException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProjectService {
@@ -42,5 +46,14 @@ public class ProjectService {
         }
 
         return this.repository.save(entity);
+    }
+
+    public List<ProjectEntity> getAll() {
+        return this.repository.findAll(Sort.by("id"));
+    }
+
+    public ProjectEntity getById(Long id) {
+        return this.repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
     }
 }
