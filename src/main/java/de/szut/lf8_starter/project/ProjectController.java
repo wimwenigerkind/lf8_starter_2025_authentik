@@ -3,6 +3,7 @@ package de.szut.lf8_starter.project;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectEmployeesDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
+import de.szut.lf8_starter.project.dto.ProjectUpdateDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -58,5 +59,13 @@ public class ProjectController implements ProjectControllerOpenAPI {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable long id) {
         this.projectService.deleteById(id);
+    }
+}
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable long id, @Valid @RequestBody ProjectUpdateDto dto) {
+        ProjectEntity existingEntity = this.projectService.getById(id);
+        projectMapper.updateEntityFromDto(dto, existingEntity);
+        this.projectService.update(existingEntity);
     }
 }
