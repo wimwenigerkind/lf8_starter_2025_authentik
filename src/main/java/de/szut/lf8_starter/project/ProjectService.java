@@ -6,6 +6,7 @@ import de.szut.lf8_starter.exceptionHandling.ClientNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
 import de.szut.lf8_starter.exceptionHandling.ResourceNotFoundException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class ProjectService {
     }
 
     public List<ProjectEntity> getAll() {
-        return this.repository.findAll();
+        return this.repository.findAll(Sort.by("id"));
     }
 
     public ProjectEntity getById(Long id) {
