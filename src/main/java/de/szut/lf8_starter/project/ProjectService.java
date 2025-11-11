@@ -27,27 +27,7 @@ public class ProjectService {
     }
 
     public ProjectEntity create(ProjectEntity entity) {
-        if (!employeeClient.employeeExists(entity.getResponsibleEmployeeId())) {
-            throw new EmployeeNotFoundException("Employee not found with id: " + entity.getResponsibleEmployeeId());
-        }
-
-        // Validate client exists - Dummy validation (Issue #9)
-        if (!clientClient.clientExists(entity.getClientId())) {
-            throw new ClientNotFoundException("Client not found with id: " + entity.getClientId());
-        }
-
-        if (entity.getQualificationIds() != null && !entity.getQualificationIds().isEmpty()) {
-            for (Long qualificationId : entity.getQualificationIds()) {
-                if (!employeeClient.isValidQualification(qualificationId)) {
-                    throw new QualificationNotMetException("Qualification not found with id: " + qualificationId);
-                }
-            }
-        }
-
-        if (!employeeClient.employeeHasQualification(entity.getResponsibleEmployeeId(), entity.getQualificationIds())) {
-            throw new QualificationNotMetException("Employee does not have all required qualifications for this project");
-        }
-
+        validateProjectDependencies(entity.getResponsibleEmployeeId(), entity.getClientId(), entity.getQualificationIds());
         return this.repository.save(entity);
     }
 
