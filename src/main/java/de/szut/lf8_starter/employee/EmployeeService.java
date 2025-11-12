@@ -22,10 +22,11 @@ public class EmployeeService {
         entity.setRoleId(Long.valueOf(dto.getQualification()));
         entity.setStartDate(dto.getStartDate());
         entity.setEndDate(dto.getEndDate());
+        entity.setProjectId(projectId);
         this.repository.save(entity);
     }
 
-    public void removeFromProject(@NotNull(message = "employee id must not be null") Long employeeId, Long projectId) {
-        this.repository.deleteById(employeeId);
+    public void removeFromProject(@NotNull(message = "employee id must not be null") Long ResponsibleEmployeeId, Long projectId) {
+        this.repository.deleteByEmployeeIdAndProjectId(ResponsibleEmployeeId, projectId);
     }
 }

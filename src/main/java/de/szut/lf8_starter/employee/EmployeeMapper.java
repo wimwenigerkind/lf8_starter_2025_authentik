@@ -18,7 +18,7 @@ public class EmployeeMapper {
     public EmployeeGetDto mapEntityToGetDto(EmployeeEntity entity) {
         EmployeeGetDto dto = new EmployeeGetDto();
         dto.setId(entity.getId());
-        dto.setRole(String.valueOf(entity.getRoleId()));
+        dto.setRoleId(entity.getRoleId());
 
         return dto;
     }

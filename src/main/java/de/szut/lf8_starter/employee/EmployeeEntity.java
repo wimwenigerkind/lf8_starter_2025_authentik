@@ -20,8 +20,8 @@ public class EmployeeEntity {
 
     private Long responsibleEmployeeId;
     private Long roleId;
+    private Long projectId;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Long projectId;
 
 }

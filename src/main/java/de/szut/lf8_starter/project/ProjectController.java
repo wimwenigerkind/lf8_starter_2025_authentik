@@ -2,6 +2,7 @@ package de.szut.lf8_starter.project;
 
 import de.szut.lf8_starter.employee.EmployeeService;
 import de.szut.lf8_starter.employee.dto.EmployeeAssignmentDto;
+import de.szut.lf8_starter.exceptionHandling.ProjectNotFoundException;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectEmployeesDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
@@ -100,13 +101,13 @@ public class ProjectController implements ProjectControllerOpenAPI {
     }
 
     @GetMapping("/employees/{employeeId}/projects/{projectId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public ProjectGetDto getProjectByEmployeeIdAndProjectId(@PathVariable Long employeeId, @PathVariable Long projectId) {
         ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId);
         for (ProjectEntity project : projects) {
             if (project.getId().equals(projectId)) {
                 return projectMapper.mapEntityToGetDto(project);
             }
-        } return null;
+        } throw new ProjectNotFoundException("Project not found for the given employee.");
     }
 }

@@ -78,10 +78,10 @@ public class ProjectService {
         this.repository.delete(project);
     }
 
-    public ProjectEntity[] getProjectsByEmployeeId(Long employeeId) {
-        return repository.findAll().stream()
+    public ProjectEntity[] getProjectsByEmployeeId(Long ResponsibleEmployeeId) {
+        return repository.findById(ResponsibleEmployeeId).stream()
                 .filter(project -> project.getEmployees().stream()
-                        .anyMatch(employee -> employee.getId().equals(employeeId)))
+                        .anyMatch(employee -> employee.getId().equals(ResponsibleEmployeeId)))
                 .toArray(ProjectEntity[]::new);
     }
 }
