@@ -13,6 +13,6 @@ import lombok.Setter;
         private Long responsibleEmployeeId;
 
         @NotBlank(message = "employee role must not be blank")
-        private String role;
+        private String qualification;
 
     }

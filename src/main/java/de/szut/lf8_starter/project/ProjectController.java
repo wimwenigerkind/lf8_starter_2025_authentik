@@ -80,7 +80,7 @@ public class ProjectController implements ProjectControllerOpenAPI {
     @PostMapping("/{projectId}/employees")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void assignEmployee(@PathVariable Long projectId, @RequestBody EmployeeAssignmentDto dto) {
-        employeeService.assignToProject(dto.getEmployeeId(), projectId, dto);
+        employeeService.assignToProject(dto.getEmployeeId(), dto);
     }
 
     @Override

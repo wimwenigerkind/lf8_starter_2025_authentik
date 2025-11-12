@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class EmployeeMapper {
     public EmployeeEntity mapCreateDtoToEntity(EmployeeAddDto dto) {
         EmployeeEntity entity = new EmployeeEntity();
-        entity.setRoleId(Long.valueOf(dto.getRole()));
+        entity.setRoleId(Long.valueOf(dto.getQualification()));
         entity.setEmployeeId(dto.getResponsibleEmployeeId());
 
         return entity;
