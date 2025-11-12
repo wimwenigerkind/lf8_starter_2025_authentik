@@ -31,13 +31,13 @@ public class GetProjectEmployeesIT extends AbstractIntegrationTest {
         project.setQualificationIds(List.of(1L));
 
         EmployeeEntity employee1 = new EmployeeEntity();
-        employee1.setEmployeeId(101L);
+        employee1.setResponsibleEmployeeId(101L);
         employee1.setRoleId(1L);
         employee1.setStartDate(LocalDate.of(2025, 10, 1));
         employee1.setProject(project);
 
         EmployeeEntity employee2 = new EmployeeEntity();
-        employee2.setEmployeeId(102L);
+        employee2.setResponsibleEmployeeId(102L);
         employee2.setRoleId(2L);
         employee2.setStartDate(LocalDate.of(2025, 11, 1));
         employee2.setProject(project);
