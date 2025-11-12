@@ -15,4 +15,6 @@ import lombok.Setter;
         @NotBlank(message = "employee role must not be blank")
         private String qualification;
 
+        @NotNull(message = "role id must not be null")
+        private Long roleId;
     }

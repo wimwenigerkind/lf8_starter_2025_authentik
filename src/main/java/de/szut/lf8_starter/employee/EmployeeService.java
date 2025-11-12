@@ -1,6 +1,7 @@
 package de.szut.lf8_starter.employee;
 
 import de.szut.lf8_starter.employee.dto.EmployeeAssignmentDto;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,8 @@ public class EmployeeService {
         this.repository.save(entity);
     }
 
-    public void removeFromProject(@NotNull(message = "employee id must not be null") Long ResponsibleEmployeeId, Long projectId) {
-        this.repository.deleteByEmployeeIdAndProjectId(ResponsibleEmployeeId, projectId);
+    @Transactional
+    public void removeFromProject(@NotNull(message = "employee id must not be null") Long responsibleEmployeeId, Long projectId) {
+        this.repository.deleteByEmployeeIdAndProjectId(responsibleEmployeeId, projectId);
     }
 }

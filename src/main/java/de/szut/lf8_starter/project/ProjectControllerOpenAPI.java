@@ -139,7 +139,7 @@ public interface ProjectControllerOpenAPI {
                     content = @Content)})
     @GetMapping("/employees/{employeeId}/projects")
     @ResponseStatus(HttpStatus.OK)
-    ProjectGetDto[] getProjectsByEmployeeId(@PathVariable Long employeeId);
+    List<ProjectGetDto> getProjectsByEmployeeId(@PathVariable Long employeeId);
 
     @Operation(summary = "Gets a specific project of an employee")
     @ApiResponses(value = {

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -78,10 +79,10 @@ public class ProjectService {
         this.repository.delete(project);
     }
 
-    public ProjectEntity[] getProjectsByEmployeeId(Long ResponsibleEmployeeId) {
-        return repository.findById(ResponsibleEmployeeId).stream()
+    public List<ProjectEntity> getProjectsByEmployeeId(Long employeeId, Long projectId) {
+        return repository.findAll().stream()
                 .filter(project -> project.getEmployees().stream()
-                        .anyMatch(employee -> employee.getId().equals(ResponsibleEmployeeId)))
-                .toArray(ProjectEntity[]::new);
+                        .anyMatch(employee -> employee.getEmployeeId().equals(employeeId)))
+                .collect(Collectors.toList());
     }
 }

@@ -91,19 +91,23 @@ public class ProjectController implements ProjectControllerOpenAPI {
         employeeService.removeFromProject(employeeId, projectId);
     }
 
+    @Override
+    public List<ProjectGetDto> getProjectsByEmployeeId(Long employeeId) {
+        return List.of();
+    }
+
     @GetMapping("/employees/{employeeId}/projects")
     @ResponseStatus(HttpStatus.OK)
-    public ProjectGetDto[] getProjectsByEmployeeId(@PathVariable Long employeeId) {
-        ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId);
-        ProjectGetDto[] result = new ProjectGetDto[projects.length];
-        for (int i = 0; i < projects.length; i++) {
-            result[i] = projectMapper.mapEntityToGetDto(projects[i]);
-        } return result;
+    public List<ProjectGetDto> getProjectsByEmployeeId(@PathVariable Long employeeId, Long projectId) {
+        List<ProjectEntity> projects = projectService.getProjectsByEmployeeId(employeeId, projectId);
+        return projects.stream()
+                .map(projectMapper::mapEntityToGetDto)
+                .toList();
     }
 
     @GetMapping("/employees/{employeeId}/projects/{projectId}")
     public ResponseEntity<ProjectGetDto> getProjectByEmployeeIdAndProjectId(@PathVariable Long employeeId, @PathVariable Long projectId) {
-        ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId);
+        ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId, projectId).toArray(new ProjectEntity[0]);
         for (ProjectEntity project : projects) {
             if (project.getId().equals(projectId)) {
                 return ResponseEntity.ok(projectMapper.mapEntityToGetDto(project));
