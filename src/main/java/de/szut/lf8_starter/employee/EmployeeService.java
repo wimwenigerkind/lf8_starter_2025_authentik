@@ -38,6 +38,6 @@ public class EmployeeService {
 
     @Transactional
     public void removeFromProject(@NotNull(message = "employee id must not be null") Long employeeId, Long projectId) {
-        this.repository.deleteByEmployeeIdAndProjectId(employeeId, projectId);
+        this.repository.deleteByEmployeeIdAndProject_Id(employeeId, projectId);
     }
 }
