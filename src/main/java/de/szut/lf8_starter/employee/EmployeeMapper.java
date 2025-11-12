@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class EmployeeMapper {
     public EmployeeEntity mapCreateDtoToEntity(EmployeeAddDto dto) {
         EmployeeEntity entity = new EmployeeEntity();
-        entity.setRole(Long.valueOf(dto.getRole()));
+        entity.setRoleId(Long.valueOf(dto.getRole()));
 
         return entity;
     }
@@ -17,7 +17,7 @@ public class EmployeeMapper {
     public EmployeeGetDto mapEntityToGetDto(EmployeeEntity entity) {
         EmployeeGetDto dto = new EmployeeGetDto();
         dto.setId(entity.getId());
-        dto.setRole(String.valueOf(entity.getRole()));
+        dto.setRole(String.valueOf(entity.getRoleId()));
 
         return dto;
     }
