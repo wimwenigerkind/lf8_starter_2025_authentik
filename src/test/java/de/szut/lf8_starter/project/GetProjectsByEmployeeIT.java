@@ -83,7 +83,7 @@
 
                 ProjectEntity saved = this.projectRepository.saveAndFlush(project);
 
-                this.mockMvc.perform(get("/api/v1/employees/{employeeId}/projects/{projectId}" + saved.getId()))
+                this.mockMvc.perform(get("/api/v1/employees/{employeeId}/projects/" + saved.getId()))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.projectId", is(saved.getId()), Long.class))
                         .andExpect(jsonPath("$.projectName", is("Single Project")));
