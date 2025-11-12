@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
     private final EmployeeRepository repository;
     private final ProjectRepository projectRepository;
+    private final EmployeeClient employeeClient;
 
-    public EmployeeService(EmployeeRepository repository, ProjectRepository projectRepository) {
+    public EmployeeService(EmployeeRepository repository, ProjectRepository projectRepository, EmployeeClient employeeClient) {
         this.repository = repository;
         this.projectRepository = projectRepository;
+        this.employeeClient = employeeClient;
     }
 
     public EmployeeEntity create(EmployeeEntity entity) {
@@ -27,10 +29,37 @@ public class EmployeeService {
         ProjectEntity project = this.projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
 
+        if (!this.employeeClient.employeeExists(dto.getEmployeeId())) {
+            throw new ResourceNotFoundException("Employee not found with id: " + dto.getEmployeeId());
+        }
+
+        Long qualificationId = Long.valueOf(dto.getQualification());
+        if (!this.employeeClient.isValidQualification(qualificationId)) {
+            throw new IllegalArgumentException("Invalid qualification id: " + qualificationId);
+        }
+
+        if (project.getQualificationIds() != null && !project.getQualificationIds().isEmpty()) {
+            if (!this.employeeClient.employeeHasQualification(dto.getEmployeeId(), project.getQualificationIds())) {
+                throw new IllegalArgumentException("Employee " + dto.getEmployeeId() +
+                        " does not have the required qualifications for this project");
+            }
+        }
+
+        long overlappingCount = this.repository.countOverlappingAssignments(
+                dto.getEmployeeId(),
+                projectId,
+                dto.getStartDate(),
+                dto.getEndDate()
+        );
+        if (overlappingCount > 0) {
+            throw new IllegalArgumentException("Employee " + dto.getEmployeeId() +
+                    " is already assigned to another project during this period");
+        }
+
         EmployeeEntity entity = new EmployeeEntity();
         entity.setProject(project);
         entity.setEmployeeId(dto.getEmployeeId());
-        entity.setRoleId(Long.valueOf(dto.getQualification()));
+        entity.setRoleId(qualificationId);
         entity.setStartDate(dto.getStartDate());
         entity.setEndDate(dto.getEndDate());
         this.repository.save(entity);
