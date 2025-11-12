@@ -41,7 +41,11 @@ public class ProjectService {
     }
 
     @Transactional
-    public void update(ProjectEntity updatedEntity) {
+    public void update(Long id, ProjectEntity updatedEntity) {
+        if (!updatedEntity.getId().equals(id)) {
+            throw new IllegalArgumentException("ID mismatch: path ID " + id + " does not match entity ID " + updatedEntity.getId());
+        }
+
         validateProjectDependencies(updatedEntity.getResponsibleEmployeeId(), updatedEntity.getClientId(), updatedEntity.getQualificationIds());
         this.repository.save(updatedEntity);
     }
@@ -79,10 +83,26 @@ public class ProjectService {
         this.repository.delete(project);
     }
 
-    public List<ProjectEntity> getProjectsByEmployeeId(Long employeeId, Long projectId) {
-        return repository.findAll().stream()
-                .filter(project -> project.getEmployees().stream()
-                        .anyMatch(employee -> employee.getEmployeeId().equals(employeeId)))
-                .collect(Collectors.toList());
+    public List<ProjectEntity> getProjectsByEmployeeId(Long employeeId) {
+        return this.repository.findAll().stream()
+                .filter(project -> project.getEmployees() != null &&
+                        project.getEmployees().stream()
+                                .anyMatch(employee -> employee.getEmployeeId().equals(employeeId)))
+                .toList();
+    }
+
+    public ProjectEntity getProjectByEmployeeIdAndProjectId(Long employeeId, Long projectId) {
+        ProjectEntity project = this.repository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
+
+        boolean employeeAssigned = project.getEmployees() != null &&
+                project.getEmployees().stream()
+                        .anyMatch(employee -> employee.getEmployeeId().equals(employeeId));
+
+        if (!employeeAssigned) {
+            throw new ResourceNotFoundException("Employee with id " + employeeId + " is not assigned to project with id " + projectId);
+        }
+
+        return project;
     }
 }

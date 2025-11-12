@@ -127,30 +127,4 @@ public interface ProjectControllerOpenAPI {
     @DeleteMapping("/{projectId}/employees/{employeeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeEmployee(@PathVariable Long projectId, @PathVariable Long employeeId);
-
-    @Operation(summary = "Gets all projects of an employee")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "found projects",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProjectGetDto.class))}),
-            @ApiResponse(responseCode = "401", description = "not authorized",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "employee not found",
-                    content = @Content)})
-    @GetMapping("/employees/{employeeId}/projects")
-    @ResponseStatus(HttpStatus.OK)
-    List<ProjectGetDto> getProjectsByEmployeeId(@PathVariable Long employeeId);
-
-    @Operation(summary = "Gets a specific project of an employee")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "found project",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProjectGetDto.class))}),
-            @ApiResponse(responseCode = "401", description = "not authorized",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "employee or project not found",
-                    content = @Content)})
-    @GetMapping("/employees/{employeeId}/projects/{projectId}")
-    @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<ProjectGetDto> getProjectByEmployeeIdAndProjectId(@PathVariable Long employeeId, @PathVariable Long projectId);
 }

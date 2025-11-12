@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/projects")
-public abstract class ProjectController implements ProjectControllerOpenAPI {
+public class ProjectController implements ProjectControllerOpenAPI {
 
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
@@ -75,13 +75,14 @@ public abstract class ProjectController implements ProjectControllerOpenAPI {
     public void update(@PathVariable long id, @Valid @RequestBody ProjectUpdateDto dto) {
         ProjectEntity existingEntity = this.projectService.getById(id);
         projectMapper.updateEntityFromDto(dto, existingEntity);
-        this.projectService.update(existingEntity);
+        this.projectService.update(id, existingEntity);
     }
 
+    @Override
     @PostMapping("/{projectId}/employees")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void assignEmployee(@PathVariable Long projectId, @RequestBody EmployeeAssignmentDto dto) {
-        employeeService.assignToProject(dto.getEmployeeId(), dto);
+    public void assignEmployee(@PathVariable Long projectId, @Valid @RequestBody EmployeeAssignmentDto dto) {
+        employeeService.assignToProject(projectId, dto);
     }
 
     @Override
@@ -89,26 +90,5 @@ public abstract class ProjectController implements ProjectControllerOpenAPI {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeEmployee(@PathVariable Long projectId, @PathVariable Long employeeId) {
         employeeService.removeFromProject(employeeId, projectId);
-    }
-
-    @GetMapping("/employees/{employeeId}/projects")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ProjectGetDto> getProjectsByEmployeeId(@PathVariable Long employeeId, Long projectId) {
-        List<ProjectEntity> projects = projectService.getProjectsByEmployeeId(employeeId, projectId);
-        return projects.stream()
-                .map(projectMapper::mapEntityToGetDto)
-                .toList();
-    }
-
-    @GetMapping("/employees/{employeeId}/projects/{projectId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ProjectGetDto> getProjectByEmployeeIdAndProjectId(@PathVariable Long employeeId, @PathVariable Long projectId) {
-        ProjectEntity project = projectService.getById(projectId);
-        boolean assigned = project.getEmployees() != null &&
-                project.getEmployees().stream().anyMatch(e -> e.getId().equals(employeeId));
-        if (assigned) {
-            return ResponseEntity.ok(projectMapper.mapEntityToGetDto(project));
-        }
-        throw new ProjectNotFoundException("Project not found for the given employee.");
     }
 }
