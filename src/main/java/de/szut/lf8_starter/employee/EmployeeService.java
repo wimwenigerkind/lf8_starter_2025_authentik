@@ -33,7 +33,13 @@ public class EmployeeService {
             throw new ResourceNotFoundException("Employee not found with id: " + dto.getEmployeeId());
         }
 
-        Long qualificationId = Long.valueOf(dto.getQualification());
+        Long qualificationId;
+        try {
+            qualificationId = Long.valueOf(dto.getQualification());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Qualification must be a valid number, got: " + dto.getQualification(), e);
+        }
+
         if (!this.employeeClient.isValidQualification(qualificationId)) {
             throw new IllegalArgumentException("Invalid qualification id: " + qualificationId);
         }
