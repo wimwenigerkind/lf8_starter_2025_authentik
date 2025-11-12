@@ -1,6 +1,7 @@
 package de.szut.lf8_starter.employee;
 
 import de.szut.lf8_starter.project.ProjectEntity;
+import de.szut.lf8_starter.validation.ValidDateRange;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "project_employee")
+@ValidDateRange(startDateField = "startDate", endDateField = "endDate")
 public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
