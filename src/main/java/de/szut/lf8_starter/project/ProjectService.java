@@ -7,12 +7,12 @@ import de.szut.lf8_starter.exceptionHandling.ConflictException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
 import de.szut.lf8_starter.exceptionHandling.ResourceNotFoundException;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -83,7 +83,7 @@ public class ProjectService {
         this.repository.delete(project);
     }
 
-    public List<ProjectEntity> getProjectsByEmployeeId(Long employeeId) {
+    public List<ProjectEntity> getProjectsByEmployeeId(@NotNull Long employeeId) {
         return this.repository.findAll().stream()
                 .filter(project -> project.getEmployees() != null &&
                         project.getEmployees().stream()
@@ -91,7 +91,7 @@ public class ProjectService {
                 .toList();
     }
 
-    public ProjectEntity getProjectByEmployeeIdAndProjectId(Long employeeId, Long projectId) {
+    public ProjectEntity getProjectByEmployeeIdAndProjectId(@NotNull Long employeeId, @NotNull Long projectId) {
         ProjectEntity project = this.repository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
 
