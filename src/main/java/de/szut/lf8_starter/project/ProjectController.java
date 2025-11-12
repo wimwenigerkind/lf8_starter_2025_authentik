@@ -10,6 +10,7 @@ import de.szut.lf8_starter.project.dto.ProjectUpdateDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -101,12 +102,11 @@ public class ProjectController implements ProjectControllerOpenAPI {
     }
 
     @GetMapping("/employees/{employeeId}/projects/{projectId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ProjectGetDto getProjectByEmployeeIdAndProjectId(@PathVariable Long employeeId, @PathVariable Long projectId) {
+    public ResponseEntity<ProjectGetDto> getProjectByEmployeeIdAndProjectId(@PathVariable Long employeeId, @PathVariable Long projectId) {
         ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId);
         for (ProjectEntity project : projects) {
             if (project.getId().equals(projectId)) {
-                return projectMapper.mapEntityToGetDto(project);
+                return ResponseEntity.ok(projectMapper.mapEntityToGetDto(project));
             }
         } throw new ProjectNotFoundException("Project not found for the given employee.");
     }
