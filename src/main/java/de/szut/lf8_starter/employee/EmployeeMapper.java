@@ -10,7 +10,7 @@ public class EmployeeMapper {
     public EmployeeEntity mapCreateDtoToEntity(EmployeeAddDto dto) {
         EmployeeEntity entity = new EmployeeEntity();
         entity.setRoleId(dto.getRoleId());
-        entity.setEmployeeId(dto.getResponsibleEmployeeId());
+        entity.setEmployeeId(dto.getEmployeeId());
 
         return entity;
     }

@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class EmployeeAddDto {
 
-    @NotNull(message = "responsible employee id must not be null")
-    private Long responsibleEmployeeId;
+    @NotNull(message = "employee id must not be null")
+    private Long employeeId;
 
     @NotBlank(message = "employee role must not be blank")
     private String qualification;
