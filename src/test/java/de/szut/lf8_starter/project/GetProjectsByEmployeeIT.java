@@ -54,7 +54,7 @@ public class GetProjectsByEmployeeIT extends AbstractIntegrationTest {
         ProjectEntity saved1 = this.projectRepository.saveAndFlush(project1);
         ProjectEntity saved2 = this.projectRepository.saveAndFlush(project2);
 
-        this.mockMvc.perform(get("/api/v1/employees/{employeeId}/projects", 101L))
+        this.mockMvc.perform(get("/api/v1/employees/" + e2.getEmployeeId() + "/projects", 101L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[*].projectName", containsInAnyOrder("Project A", "Project B")))
@@ -81,7 +81,7 @@ public class GetProjectsByEmployeeIT extends AbstractIntegrationTest {
 
         ProjectEntity saved = this.projectRepository.saveAndFlush(project);
 
-        this.mockMvc.perform(get("/api/v1/employees/{employeeId}/projects/{projectId}", 202L, saved.getId()))
+        this.mockMvc.perform(get("/api/v1/employees/" + e.getEmployeeId() + "/projects/" + saved.getId(), 202L, saved.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.projectId", is(saved.getId().intValue())))
                 .andExpect(jsonPath("$.projectName", is("Single Project")));
