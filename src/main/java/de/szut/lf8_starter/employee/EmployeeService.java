@@ -16,13 +16,12 @@ public class EmployeeService {
         return this.repository.save(entity);
     }
 
-    public void assignToProject(@NotNull(message = "employee id must not be null") Long responsibleEmployeeId, Long projectId, EmployeeAssignmentDto dto) {
+    public void assignToProject(@NotNull(message = "employee id must not be null") Long responsibleEmployeeId, EmployeeAssignmentDto dto) {
         EmployeeEntity entity = new EmployeeEntity();
-        entity.setResponsibleEmployeeId(responsibleEmployeeId);
+        entity.setEmployeeId(responsibleEmployeeId);
         entity.setRoleId(Long.valueOf(dto.getQualification()));
         entity.setStartDate(dto.getStartDate());
         entity.setEndDate(dto.getEndDate());
-        entity.setProjectId(projectId);
         this.repository.save(entity);
     }
 

@@ -18,9 +18,8 @@ public class EmployeeEntity {
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
 
-    private Long responsibleEmployeeId;
+    private Long employeeId;
     private Long roleId;
-    private Long projectId;
     private LocalDate startDate;
     private LocalDate endDate;
 

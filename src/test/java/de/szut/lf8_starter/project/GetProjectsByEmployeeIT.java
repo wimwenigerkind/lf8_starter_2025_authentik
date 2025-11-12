@@ -28,7 +28,7 @@
                 project1.setPlannedEndDate(LocalDate.of(2026, 3, 31));
 
                 EmployeeEntity e1 = new EmployeeEntity();
-                e1.setResponsibleEmployeeId(101L);
+                e1.setEmployeeId(101L);
                 e1.setRoleId(1L);
                 e1.setStartDate(LocalDate.of(2025, 10, 1));
                 e1.setProject(project1);
@@ -43,7 +43,7 @@
                 project2.setPlannedEndDate(LocalDate.of(2026, 4, 30));
 
                 EmployeeEntity e2 = new EmployeeEntity();
-                e2.setResponsibleEmployeeId(101L);
+                e2.setEmployeeId(101L);
                 e2.setRoleId(2L);
                 e2.setStartDate(LocalDate.of(2025, 11, 1));
                 e2.setProject(project2);
@@ -74,7 +74,7 @@
                 project.setPlannedEndDate(LocalDate.of(2026, 5, 31));
 
                 EmployeeEntity e = new EmployeeEntity();
-                e.setResponsibleEmployeeId(202L);
+                e.setEmployeeId(202L);
                 e.setRoleId(3L);
                 e.setStartDate(LocalDate.of(2025, 12, 1));
                 e.setProject(project);

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
-    @Query("SELECT COUNT(e) FROM EmployeeEntity e WHERE e.responsibleEmployeeId = :employeeId " +
+    @Query("SELECT COUNT(e) FROM EmployeeEntity e WHERE e.employeeId = :employeeId " +
             "AND e.project.id != :projectId " +
             "AND ((e.startDate <= :endDate AND e.endDate >= :startDate))")
     long countOverlappingAssignments(@Param("employeeId") Long employeeId,
