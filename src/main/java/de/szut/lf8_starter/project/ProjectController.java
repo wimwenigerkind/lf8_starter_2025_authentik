@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/projects")
-public class ProjectController implements ProjectControllerOpenAPI {
+public abstract class ProjectController implements ProjectControllerOpenAPI {
 
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
@@ -87,13 +87,8 @@ public class ProjectController implements ProjectControllerOpenAPI {
     @Override
     @DeleteMapping("/{projectId}/employees/{employeeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeEmployee(Long projectId, Long employeeId) {
+    public void removeEmployee(@PathVariable Long projectId, @PathVariable Long employeeId) {
         employeeService.removeFromProject(employeeId, projectId);
-    }
-
-    @Override
-    public List<ProjectGetDto> getProjectsByEmployeeId(Long employeeId) {
-        return List.of();
     }
 
     @GetMapping("/employees/{employeeId}/projects")
@@ -106,12 +101,14 @@ public class ProjectController implements ProjectControllerOpenAPI {
     }
 
     @GetMapping("/employees/{employeeId}/projects/{projectId}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ProjectGetDto> getProjectByEmployeeIdAndProjectId(@PathVariable Long employeeId, @PathVariable Long projectId) {
-        ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId, projectId).toArray(new ProjectEntity[0]);
-        for (ProjectEntity project : projects) {
-            if (project.getId().equals(projectId)) {
-                return ResponseEntity.ok(projectMapper.mapEntityToGetDto(project));
-            }
-        } throw new ProjectNotFoundException("Project not found for the given employee.");
+        ProjectEntity project = projectService.getById(projectId);
+        boolean assigned = project.getEmployees() != null &&
+                project.getEmployees().stream().anyMatch(e -> e.getId().equals(employeeId));
+        if (assigned) {
+            return ResponseEntity.ok(projectMapper.mapEntityToGetDto(project));
+        }
+        throw new ProjectNotFoundException("Project not found for the given employee.");
     }
 }
