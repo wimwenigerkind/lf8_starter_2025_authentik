@@ -90,13 +90,13 @@ public class ProjectController implements ProjectControllerOpenAPI {
     }
 
     @GetMapping("/employees/{employeeId}/projects")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ProjectGetDto getProjectsByEmployeeId(@PathVariable Long employeeId) {
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectGetDto[] getProjectsByEmployeeId(@PathVariable Long employeeId) {
         ProjectEntity[] projects = projectService.getProjectsByEmployeeId(employeeId);
         ProjectGetDto[] result = new ProjectGetDto[projects.length];
         for (int i = 0; i < projects.length; i++) {
             result[i] = projectMapper.mapEntityToGetDto(projects[i]);
-        } return null;
+        } return result;
     }
 
     @GetMapping("/employees/{employeeId}/projects/{projectId}")

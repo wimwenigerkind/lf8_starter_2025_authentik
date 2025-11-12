@@ -9,5 +9,4 @@ public class Lf8StarterApplication {
     public static void main(String[] args) {
         SpringApplication.run(Lf8StarterApplication.class, args);
     }
-
 }
