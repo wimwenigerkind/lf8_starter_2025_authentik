@@ -33,6 +33,7 @@ public class GetProjectsByEmployeeIT extends AbstractIntegrationTest {
         e1.setEmployeeId(101L);
         e1.setRoleId(1L);
         e1.setStartDate(LocalDate.of(2025, 10, 1));
+        e1.setEndDate(LocalDate.of(2026, 3, 31));
         e1.setProject(project1);
 
         project1.setEmployees(List.of(e1));
@@ -49,6 +50,7 @@ public class GetProjectsByEmployeeIT extends AbstractIntegrationTest {
         e2.setEmployeeId(101L);
         e2.setRoleId(2L);
         e2.setStartDate(LocalDate.of(2025, 11, 1));
+        e2.setEndDate(LocalDate.of(2026, 4, 30));
         e2.setProject(project2);
 
         project2.setEmployees(List.of(e2));
@@ -78,6 +80,7 @@ public class GetProjectsByEmployeeIT extends AbstractIntegrationTest {
         e.setEmployeeId(202L);
         e.setRoleId(3L);
         e.setStartDate(LocalDate.of(2025, 12, 1));
+        e.setEndDate(LocalDate.of(2026, 5, 31));
         e.setProject(project);
 
         project.setEmployees(List.of(e));
