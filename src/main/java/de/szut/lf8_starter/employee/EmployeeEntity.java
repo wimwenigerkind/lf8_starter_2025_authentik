@@ -24,12 +24,4 @@ public class EmployeeEntity {
     private Long roleId;
     private LocalDate startDate;
     private LocalDate endDate;
-
-    public void setRole(@NotBlank(message = "employee role must not be blank") Long role) {
-        this.roleId = role;
-    }
-
-    public Long getRole() {
-        return roleId;
-    }
 }
