@@ -16,9 +16,9 @@ public class EmployeeService {
         return this.repository.save(entity);
     }
 
-    public void assignToProject(@NotNull(message = "employee id must not be null") Long employeeId, Long projectId, EmployeeAssignmentDto dto) {
+    public void assignToProject(@NotNull(message = "employee id must not be null") Long responsibleEmployeeId, Long projectId, EmployeeAssignmentDto dto) {
         EmployeeEntity entity = new EmployeeEntity();
-        entity.setEmployeeId(employeeId);
+        entity.setResponsibleEmployeeId(responsibleEmployeeId);
         entity.setRoleId(Long.valueOf(dto.getQualification()));
         entity.setStartDate(dto.getStartDate());
         entity.setEndDate(dto.getEndDate());

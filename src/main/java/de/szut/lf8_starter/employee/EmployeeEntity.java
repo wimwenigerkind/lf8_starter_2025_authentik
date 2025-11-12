@@ -2,8 +2,6 @@ package de.szut.lf8_starter.employee;
 
 import de.szut.lf8_starter.project.ProjectEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -20,8 +18,10 @@ public class EmployeeEntity {
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
 
-    private Long employeeId;
+    private Long responsibleEmployeeId;
     private Long roleId;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Long projectId;
+
 }
