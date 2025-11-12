@@ -18,5 +18,7 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> 
 
     @Modifying
     @Query("DELETE FROM EmployeeEntity e WHERE e.employeeId = :employeeId AND e.project.id = :projectId")
-    void deleteByEmployeeIdAndProject_Id(@Param("employeeId") Long employeeId, @Param("projectId") Long projectId);
+    int deleteByEmployeeIdAndProject_Id(@Param("employeeId") Long employeeId, @Param("projectId") Long projectId);
+
+    boolean existsByEmployeeIdAndProject_Id(Long employeeId, Long projectId);
 }

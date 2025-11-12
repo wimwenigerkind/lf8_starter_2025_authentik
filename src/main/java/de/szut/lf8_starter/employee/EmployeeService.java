@@ -38,6 +38,10 @@ public class EmployeeService {
 
     @Transactional
     public void removeFromProject(@NotNull(message = "employee id must not be null") Long employeeId, Long projectId) {
+        if (!this.repository.existsByEmployeeIdAndProject_Id(employeeId, projectId)) {
+            throw new ResourceNotFoundException("Employee " + employeeId + " is not assigned to project " + projectId);
+        }
+
         this.repository.deleteByEmployeeIdAndProject_Id(employeeId, projectId);
     }
 }
