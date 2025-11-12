@@ -29,10 +29,6 @@ public class EmployeeEntity {
         this.roleId = role;
     }
 
-    public Long getName() {
-        return employeeId;
-    }
-
     public Long getRole() {
         return roleId;
     }

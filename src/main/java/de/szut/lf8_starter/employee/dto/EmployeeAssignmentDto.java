@@ -25,6 +25,6 @@ public class EmployeeAssignmentDto {
     private LocalDate endDate;
 
     public @NotBlank(message = "employee role must not be blank") String getQualification() {
-        return "" + qualification;
+        return qualification;
     }
 }
