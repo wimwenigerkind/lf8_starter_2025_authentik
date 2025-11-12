@@ -5,16 +5,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-    @Getter
-    @Setter
-    public class EmployeeAddDto {
+@Getter
+@Setter
+public class EmployeeAddDto {
 
-        @NotNull(message = "responsible employee id must not be null")
-        private Long responsibleEmployeeId;
+    @NotNull(message = "responsible employee id must not be null")
+    private Long responsibleEmployeeId;
 
-        @NotBlank(message = "employee role must not be blank")
-        private String qualification;
+    @NotBlank(message = "employee role must not be blank")
+    private String qualification;
 
-        @NotNull(message = "role id must not be null")
-        private Long roleId;
-    }
+    @NotNull(message = "role id must not be null")
+    private Long roleId;
+}
