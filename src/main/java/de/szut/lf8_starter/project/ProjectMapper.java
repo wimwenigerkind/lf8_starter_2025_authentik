@@ -7,8 +7,6 @@ import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import de.szut.lf8_starter.project.dto.ProjectUpdateDto;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
 @Service
 public class ProjectMapper {
     public ProjectEntity mapCreateDtoToEntity(ProjectCreateDto dto) {

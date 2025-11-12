@@ -1,11 +1,16 @@
 package de.szut.lf8_starter.project;
 
+import de.szut.lf8_starter.employee.EmployeeService;
+import de.szut.lf8_starter.employee.dto.EmployeeAssignmentDto;
+import de.szut.lf8_starter.exceptionHandling.ProjectNotFoundException;
 import de.szut.lf8_starter.project.dto.ProjectCreateDto;
 import de.szut.lf8_starter.project.dto.ProjectEmployeesDto;
 import de.szut.lf8_starter.project.dto.ProjectGetDto;
 import de.szut.lf8_starter.project.dto.ProjectUpdateDto;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +21,13 @@ public class ProjectController implements ProjectControllerOpenAPI {
 
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
+    private final EmployeeService employeeService;
 
-    public ProjectController(ProjectService projectService, ProjectMapper projectMapper) {
+    @Autowired
+    public ProjectController(ProjectService projectService, ProjectMapper projectMapper, EmployeeService employeeService) {
         this.projectService = projectService;
         this.projectMapper = projectMapper;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -67,6 +75,20 @@ public class ProjectController implements ProjectControllerOpenAPI {
     public void update(@PathVariable long id, @Valid @RequestBody ProjectUpdateDto dto) {
         ProjectEntity existingEntity = this.projectService.getById(id);
         projectMapper.updateEntityFromDto(dto, existingEntity);
-        this.projectService.update(existingEntity);
+        this.projectService.update(id, existingEntity);
+    }
+
+    @Override
+    @PostMapping("/{projectId}/employees")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void assignEmployee(@PathVariable Long projectId, @Valid @RequestBody EmployeeAssignmentDto dto) {
+        employeeService.assignToProject(projectId, dto);
+    }
+
+    @Override
+    @DeleteMapping("/{projectId}/employees/{employeeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeEmployee(@PathVariable Long projectId, @PathVariable Long employeeId) {
+        employeeService.removeFromProject(employeeId, projectId);
     }
 }

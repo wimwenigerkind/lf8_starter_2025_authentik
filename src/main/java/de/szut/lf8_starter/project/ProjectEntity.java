@@ -18,7 +18,7 @@ import java.util.List;
 public class ProjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "project name must not be blank")
     private String name;

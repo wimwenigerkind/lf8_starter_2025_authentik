@@ -7,6 +7,7 @@ import de.szut.lf8_starter.exceptionHandling.ConflictException;
 import de.szut.lf8_starter.exceptionHandling.EmployeeNotFoundException;
 import de.szut.lf8_starter.exceptionHandling.QualificationNotMetException;
 import de.szut.lf8_starter.exceptionHandling.ResourceNotFoundException;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,11 @@ public class ProjectService {
     }
 
     @Transactional
-    public void update(ProjectEntity updatedEntity) {
+    public void update(Long id, ProjectEntity updatedEntity) {
+        if (!updatedEntity.getId().equals(id)) {
+            throw new IllegalArgumentException("ID mismatch: path ID " + id + " does not match entity ID " + updatedEntity.getId());
+        }
+
         validateProjectDependencies(updatedEntity.getResponsibleEmployeeId(), updatedEntity.getClientId(), updatedEntity.getQualificationIds());
         this.repository.save(updatedEntity);
     }
@@ -76,5 +81,28 @@ public class ProjectService {
         }
 
         this.repository.delete(project);
+    }
+
+    public List<ProjectEntity> getProjectsByEmployeeId(@NotNull Long employeeId) {
+        return this.repository.findAll().stream()
+                .filter(project -> project.getEmployees() != null &&
+                        project.getEmployees().stream()
+                                .anyMatch(employee -> employee.getEmployeeId().equals(employeeId)))
+                .toList();
+    }
+
+    public ProjectEntity getProjectByEmployeeIdAndProjectId(@NotNull Long employeeId, @NotNull Long projectId) {
+        ProjectEntity project = this.repository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
+
+        boolean employeeAssigned = project.getEmployees() != null &&
+                project.getEmployees().stream()
+                        .anyMatch(employee -> employee.getEmployeeId().equals(employeeId));
+
+        if (!employeeAssigned) {
+            throw new ResourceNotFoundException("Employee with id " + employeeId + " is not assigned to project with id " + projectId);
+        }
+
+        return project;
     }
 }
