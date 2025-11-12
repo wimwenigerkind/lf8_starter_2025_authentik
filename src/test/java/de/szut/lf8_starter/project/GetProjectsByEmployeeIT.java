@@ -53,7 +53,7 @@
                 ProjectEntity saved1 = this.projectRepository.saveAndFlush(project1);
                 ProjectEntity saved2 = this.projectRepository.saveAndFlush(project2);
 
-                this.mockMvc.perform(get("/api/v1/employees/101/projects"))
+                this.mockMvc.perform(get("/api/v1/employees/{employeeId}/projects"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$", hasSize(2)))
                         .andExpect(jsonPath("$[0].projectId", is(saved1.getId()), Long.class))
@@ -83,7 +83,7 @@
 
                 ProjectEntity saved = this.projectRepository.saveAndFlush(project);
 
-                this.mockMvc.perform(get("/api/v1/employees/202/projects/" + saved.getId()))
+                this.mockMvc.perform(get("/api/v1/employees/{employeeId}/projects/{projectId}" + saved.getId()))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.projectId", is(saved.getId()), Long.class))
                         .andExpect(jsonPath("$.projectName", is("Single Project")));
